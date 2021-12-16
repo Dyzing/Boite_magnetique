@@ -20,12 +20,13 @@ public class Liquide {
         Case caseOuest= new Case(currentCase.getX()+1, currentCase.getY());
         Case caseSud = new Case (currentCase.getX(), currentCase.getY()-1);
         Case caseNord = new Case (currentCase.getX(), currentCase.getY()+1);
-        
+
 
         if ((caseEst.isValide ==true && caseNord.isValide == true && caseSud.isValide ==false && caseOuest.isValide ==false) ||
                 (caseEst.isValide ==false && caseNord.isValide == true && caseSud.isValide ==false && caseOuest.isValide ==true) ||
                 (caseEst.isValide ==true && caseNord.isValide == false && caseSud.isValide ==true && caseOuest.isValide ==false) ||
                 (caseEst.isValide ==false && caseNord.isValide == false && caseSud.isValide ==true && caseOuest.isValide ==true)){
+            System.out.println("EMBRANCHEMENT !!");
             currentCase.isEmbramchement = true;
         }
         else {
