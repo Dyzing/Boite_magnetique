@@ -26,7 +26,7 @@ public class Bloc {
         {
             for (int j = 0; j < _n; j++)
             {
-                matrice[i][j].statut = 4;
+                matrice[i][j].isValide = false;
             }
         }
 
@@ -108,7 +108,7 @@ public class Bloc {
 
         for (Case c : list_case_valide)
         {
-            matrice[c.x][c.y].statut = 3;
+            matrice[c.x][c.y].isValide = true;
         }
 
         matrice[8][1].statut = 1;
