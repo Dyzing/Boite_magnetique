@@ -5,6 +5,7 @@ public class Case {
     int statut; //1 = depart || 2 = arrivée || 3 = case normale || 4 = case embranchement || 5 = case vide
     int PM;
     boolean isChecked;
+    int x, y;
 
     public Case(int statut, boolean isChecked) {
         this.statut = statut;
