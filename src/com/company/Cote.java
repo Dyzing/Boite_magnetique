@@ -37,4 +37,11 @@ public class Cote {
         magnétisme = m;
     }
 
+    public char getCardinal() {
+        return cardinal;
+    }
+
+    public double getMagnétisme() {
+        return magnétisme;
+    }
 }
