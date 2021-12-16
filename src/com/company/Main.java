@@ -15,8 +15,6 @@ public class Main {
         System.out.println(est.magnétisme);
      */
 
-
-
 	System.out.println("Hello world");
     }
 }

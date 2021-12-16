@@ -2,14 +2,43 @@ package com.company;
 
 public class Case {
 
-    int statut; //1 = depart || 2 = arrivée || 3 = case normale || 4 = case embranchement || 5 = case vide
+    int statut; //1 = depart || 2 = arrivée
     int PM;
-    boolean isChecked;
+    boolean isChecked = false;
+    boolean isEmbramchement = false;
+    boolean isValide = false;
     int x, y;
 
     public Case(int statut, boolean isChecked) {
         this.statut = statut;
         this.isChecked = isChecked;
+    }
+
+    public Case(int x, int y) {
+        this.x = x;
+        this.y = y;
+
+    }
+
+
+    public boolean isValide() {
+        return isValide;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getStatut() {
@@ -22,14 +51,15 @@ public class Case {
 
     public int getPM() {
 
-        if (statut == 1 || statut == 2 || statut == 5){
-            PM = 0;
+        if( isEmbramchement && isValide) {
+            PM = 3;
         }
-        else if (statut == 3) {
+
+        else if (isEmbramchement && isValide) {
             PM = 1;
         }
-        else if (statut == 4) {
-            PM = 3;
+        else if (isValide = false){
+            PM = 0;
         }
         return PM;
     }
