@@ -74,6 +74,8 @@ public class Liquide {
         }
     }
 
+
+
     public void UpdateMagnetisme_NSWE(Bloc bloc, Case currentCase)
     {
         Case derniereCase = casesVues.get( casesVues.size() -1);
@@ -159,5 +161,8 @@ public class Liquide {
             }
         }
     }
+
+    
+
 
 }
