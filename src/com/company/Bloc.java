@@ -10,6 +10,7 @@ public class Bloc {
     ArrayList<Cote> list_cote;
     //ArrayList magnetisme_NSWE;
 
+
     Bloc(int m, int n)
     {
         matrice = new Case[15][16]; // MODULE 1
