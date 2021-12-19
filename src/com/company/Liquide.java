@@ -2,6 +2,8 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Stack;
 
 public class Liquide {
 
@@ -54,7 +56,7 @@ public class Liquide {
         for(int i = 0; i < 3; i++)
         {
             isStillValid = true;
-            
+
             if(i == 0) // NORD
             {
                 if((currentCase.x - 1 != derniereCase.x || currentCase.y != derniereCase.y))
@@ -127,6 +129,18 @@ public class Liquide {
                 }
             }
         }
+    }
+
+    public void TriTabMagnetisme_NSWE()
+    {
+        Arrays.sort(magnetisme_NSWE);
+    }
+
+    public void AvancerLiquide()
+    {
+        Stack pile = new Stack();
+
+        
     }
 
 }
