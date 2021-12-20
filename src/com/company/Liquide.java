@@ -269,7 +269,7 @@ public class Liquide {
         return casePotentielle;
     }
 
-    public void FillTabMagnetismeProche_NSWE(int[] tabMagnetismeProche_NSWE, Case caseCurrent)
+    public void FillTabMagnetismeProche_NSWE(Map<Character, Integer> tabMagnetismeProche_NSWE, Case caseCurrent)
     {
         Bloc bloc = Bloc.getInstance();
         Case[][] matrice_bloc = bloc.matrice;
@@ -279,53 +279,60 @@ public class Liquide {
         if(casePotentielle.isValide
                 && !casePotentielle.isChecked)
         {
-            tabMagnetismeProche_NSWE[1] = casePotentielle.getPM();
+            tabMagnetismeProche_NSWE.replace('S', casePotentielle.getPM());
         }
         else
         {
-            tabMagnetismeProche_NSWE[1] = -20;
+            tabMagnetismeProche_NSWE.replace('S', -20);
         }
 
         casePotentielle = matrice_bloc[caseCurrent.getX() -1][caseCurrent.getY()];
         if(casePotentielle.isValide
                 && !casePotentielle.isChecked)
         {
-            tabMagnetismeProche_NSWE[0] = casePotentielle.getPM();
+            tabMagnetismeProche_NSWE.replace('N', casePotentielle.getPM());
         }
         else
         {
-            tabMagnetismeProche_NSWE[0] = -20;
+            tabMagnetismeProche_NSWE.replace('N', -20);
         }
 
         casePotentielle = matrice_bloc[caseCurrent.getX()][caseCurrent.getY() + 1];
         if(casePotentielle.isValide
                 && !casePotentielle.isChecked)
         {
-            tabMagnetismeProche_NSWE[3] = casePotentielle.getPM();
+            tabMagnetismeProche_NSWE.replace('E', casePotentielle.getPM());
         }
         else
         {
-            tabMagnetismeProche_NSWE[3] = -20;
+            tabMagnetismeProche_NSWE.replace('E', -20);
         }
 
         casePotentielle = matrice_bloc[caseCurrent.getX() + 1][caseCurrent.getY() - 1];
         if(casePotentielle.isValide
                 && !casePotentielle.isChecked)
         {
-            tabMagnetismeProche_NSWE[2] = casePotentielle.getPM();
+            tabMagnetismeProche_NSWE.replace('W', casePotentielle.getPM());
         }
         else
         {
-            tabMagnetismeProche_NSWE[2] = -20;
+            tabMagnetismeProche_NSWE.replace('W', -20);
         }
 
     }
 
-    public void FillPileChoix(Stack pile, int[] tabMagnetismeProche_NSWE)
+    public void FillPileChoix(Stack pile, Map<Character, Integer> tabMagnetismeProche_NSWE)
     {
         for(int i = 3; i >= 0; i--)
         {
-            pile.push(tabMagnetismeProche_NSWE[i]);
+            if(i == 3)
+                pile.push(tabMagnetismeProche_NSWE.get('E'));
+            else if(i == 2)
+                pile.push(tabMagnetismeProche_NSWE.get('W'));
+            else if(i == 1)
+                pile.push(tabMagnetismeProche_NSWE.get('S'));
+            else
+                pile.push(tabMagnetismeProche_NSWE.get('N'));
         }
     }
 
