@@ -1,5 +1,7 @@
 package com.company;
 
+import javafx.util.Pair;
+
 import java.util.*;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -321,24 +323,24 @@ public class Liquide {
 
     }
 
-    public void FillPileChoix(Stack pile, Map<Character, Integer> tabMagnetismeProche_NSWE)
+    public void FillPileChoix(Stack<Pair> pile, Map<Character, Integer> tabMagnetismeProche_NSWE)
     {
         for(int i = 3; i >= 0; i--)
         {
             if(i == 3)
-                pile.push(tabMagnetismeProche_NSWE.get('E'));
+                pile.push(new Pair('E', tabMagnetismeProche_NSWE.get('E')));
             else if(i == 2)
-                pile.push(tabMagnetismeProche_NSWE.get('W'));
+                pile.push(new Pair('W', tabMagnetismeProche_NSWE.get('W')));
             else if(i == 1)
-                pile.push(tabMagnetismeProche_NSWE.get('S'));
+                pile.push(new Pair('S', tabMagnetismeProche_NSWE.get('S')));
             else
-                pile.push(tabMagnetismeProche_NSWE.get('N'));
+                pile.push(new Pair('N', tabMagnetismeProche_NSWE.get('N')));
         }
     }
 
     public void AvancerLiquide()
     {
-        Stack pileChoix = new Stack();
+        Stack<Pair> pileChoix = new Stack();
         Bloc bloc = Bloc.getInstance();
         Case caseStart = FindStartCase();
         Case caseEnd = FindEndCase();
