@@ -1,19 +1,19 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Liquide {
 
     List<Case> casesVues;
-    int[] magnetisme_NSWE;
+    Map<Character, Integer> magnetisme_NSWE;
 
     public Liquide()
     {
         casesVues = new ArrayList<>();
-        magnetisme_NSWE = new int[3];
+        magnetisme_NSWE = new HashMap<Character, Integer>();
     }
 
     public List<Case> getCasesVues() {
@@ -65,14 +65,19 @@ public class Liquide {
 
     }
 
-
-
+    public void Init_Magnetisme_NSWE()
+    {
+        magnetisme_NSWE.put('N', 0);
+        magnetisme_NSWE.put('S', 0);
+        magnetisme_NSWE.put('W', 0);
+        magnetisme_NSWE.put('E', 0);
+    }
 
     public void Reset_Magnetisme_NSWE()
     {
-        for (int i: magnetisme_NSWE
-             ) {
-                i = 0;
+        for (Map.Entry mapentry : magnetisme_NSWE.entrySet())
+        {
+            mapentry.setValue(0);
         }
     }
 
@@ -98,7 +103,7 @@ public class Liquide {
                     {
                         case_to_check = matrice_bloc[currentCase.x - 1][currentCase.y];
                         if (case_to_check.isValide) {
-                            magnetisme_NSWE[i] += case_to_check.getPM();
+                            magnetisme_NSWE.replace('N', magnetisme_NSWE.get('N') + case_to_check.getPM());
                         }
                         else
                         {
@@ -116,7 +121,7 @@ public class Liquide {
                     {
                         case_to_check = matrice_bloc[currentCase.x + 1][currentCase.y];
                         if (case_to_check.isValide) {
-                            magnetisme_NSWE[i] += case_to_check.getPM();
+                            magnetisme_NSWE.replace('S', magnetisme_NSWE.get('N') + case_to_check.getPM());
                         }
                         else
                         {
@@ -134,7 +139,7 @@ public class Liquide {
                     {
                         case_to_check = matrice_bloc[currentCase.x][currentCase.y - 1];
                         if (case_to_check.isValide) {
-                            magnetisme_NSWE[i] += case_to_check.getPM();
+                            magnetisme_NSWE.replace('W', magnetisme_NSWE.get('N') + case_to_check.getPM());
                         }
                         else
                         {
@@ -152,7 +157,7 @@ public class Liquide {
                     {
                         case_to_check = matrice_bloc[currentCase.x][currentCase.y + 1];
                         if (case_to_check.isValide) {
-                            magnetisme_NSWE[i] += case_to_check.getPM();
+                            magnetisme_NSWE.replace('E', magnetisme_NSWE.get('N') + case_to_check.getPM());
                         }
                         else
                         {
@@ -164,16 +169,190 @@ public class Liquide {
         }
     }
 
-    public void TriTabMagnetisme_NSWE()
+    public Map<Character, Integer> TriTabMagnetisme_NSWE()
     {
-        Arrays.sort(magnetisme_NSWE);
+        return magnetisme_NSWE.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        HashMap::new
+                ));
+    }
+
+    public Case FindStartCase()
+    {
+        Bloc bloc = Bloc.getInstance();
+        Case[][] matrice_bloc = bloc.getMatrice();
+        int matrice_length, matrice_height;
+        matrice_height = bloc._m;
+        matrice_length = bloc._n;
+        Case caseRes = new Case(0, 0);
+
+        for (int i = 0; i < matrice_height; i++)
+        {
+            for (int j = 0; j < matrice_length; j++)
+            {
+                if(matrice_bloc[i][j].statut == 1)
+                {
+                    caseRes = matrice_bloc[i][j];
+                    break;
+                }
+            }
+        }
+
+        return caseRes;
+    }
+
+    public Case FindEndCase()
+    {
+        Bloc bloc = Bloc.getInstance();
+        Case[][] matrice_bloc = bloc.getMatrice();
+        int matrice_length, matrice_height;
+        matrice_height = bloc._m;
+        matrice_length = bloc._n;
+        Case caseRes = new Case(0, 0);
+
+        for (int i = 0; i < matrice_height; i++)
+        {
+            for (int j = 0; j < matrice_length; j++)
+            {
+                if(matrice_bloc[i][j].statut == 2)
+                {
+                    caseRes = matrice_bloc[i][j];
+                    break;
+                }
+            }
+        }
+
+        return caseRes;
+    }
+
+    public Case FindNextCaseCorridor(Case caseCurrent)
+    {
+        Bloc bloc = Bloc.getInstance();
+        Case[][] matrice_bloc = bloc.matrice;
+        Case casePotentielle = new Case(0, 0);
+
+        casePotentielle = matrice_bloc[caseCurrent.getX() + 1][caseCurrent.getY()];
+        if(casePotentielle.isValide
+                && !casePotentielle.isChecked)
+        {
+            return casePotentielle;
+        }
+
+        casePotentielle = matrice_bloc[caseCurrent.getX() -1][caseCurrent.getY()];
+        if(casePotentielle.isValide
+                && !casePotentielle.isChecked)
+        {
+            return casePotentielle;
+        }
+
+        casePotentielle = matrice_bloc[caseCurrent.getX()][caseCurrent.getY() + 1];
+        if(casePotentielle.isValide
+                && !casePotentielle.isChecked)
+        {
+            return casePotentielle;
+        }
+
+        casePotentielle = matrice_bloc[caseCurrent.getX() + 1][caseCurrent.getY() - 1];
+        if(casePotentielle.isValide
+                && !casePotentielle.isChecked)
+        {
+            return casePotentielle;
+        }
+
+        caseCurrent.isChecked = true;
+
+        return casePotentielle;
+    }
+
+    public void FillTabMagnetismeProche_NSWE(int[] tabMagnetismeProche_NSWE, Case caseCurrent)
+    {
+        Bloc bloc = Bloc.getInstance();
+        Case[][] matrice_bloc = bloc.matrice;
+        Case casePotentielle = new Case(0, 0);
+
+        casePotentielle = matrice_bloc[caseCurrent.getX() + 1][caseCurrent.getY()];
+        if(casePotentielle.isValide
+                && !casePotentielle.isChecked)
+        {
+            tabMagnetismeProche_NSWE[1] = casePotentielle.getPM();
+        }
+        else
+        {
+            tabMagnetismeProche_NSWE[1] = -20;
+        }
+
+        casePotentielle = matrice_bloc[caseCurrent.getX() -1][caseCurrent.getY()];
+        if(casePotentielle.isValide
+                && !casePotentielle.isChecked)
+        {
+            tabMagnetismeProche_NSWE[0] = casePotentielle.getPM();
+        }
+        else
+        {
+            tabMagnetismeProche_NSWE[0] = -20;
+        }
+
+        casePotentielle = matrice_bloc[caseCurrent.getX()][caseCurrent.getY() + 1];
+        if(casePotentielle.isValide
+                && !casePotentielle.isChecked)
+        {
+            tabMagnetismeProche_NSWE[3] = casePotentielle.getPM();
+        }
+        else
+        {
+            tabMagnetismeProche_NSWE[3] = -20;
+        }
+
+        casePotentielle = matrice_bloc[caseCurrent.getX() + 1][caseCurrent.getY() - 1];
+        if(casePotentielle.isValide
+                && !casePotentielle.isChecked)
+        {
+            tabMagnetismeProche_NSWE[2] = casePotentielle.getPM();
+        }
+        else
+        {
+            tabMagnetismeProche_NSWE[2] = -20;
+        }
+
+    }
+
+    public void FillPileChoix(Stack pile, int[] tabMagnetismeProche_NSWE)
+    {
+        for(int i = 3; i >= 0; i--)
+        {
+            pile.push(tabMagnetismeProche_NSWE[i]);
+        }
     }
 
     public void AvancerLiquide()
     {
-        Stack pile = new Stack();
+        Stack pileChoix = new Stack();
+        Bloc bloc = Bloc.getInstance();
+        Case caseStart = FindStartCase();
+        Case caseEnd = FindEndCase();
+        Case caseCurrent = caseStart;
 
-        
+        while(caseCurrent != caseEnd)
+        {
+            CheckEmbranchement(caseCurrent);
+            if(caseCurrent.isEmbramchement)
+            {
+                FillTabMagnetismeProche_NSWE(magnetisme_NSWE, caseCurrent);
+                TriTabMagnetisme_NSWE();
+                FillPileChoix(pileChoix, magnetisme_NSWE);
+                caseCurrent.isChecked = true;
+            }
+            else
+            {
+                caseCurrent = FindNextCaseCorridor(caseCurrent);
+                caseCurrent.isChecked = true;
+            }
+        }
     }
 
 }

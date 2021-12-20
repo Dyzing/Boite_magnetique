@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 public class Bloc {
 
+    private static Bloc bloc_instance = null;
     Case[][] matrice;
-    int _m, _n; //m la hauteur de la matrice; n la largeur de la matrice
+    int _m;
+    int _n; //m la hauteur de la matrice; n la largeur de la matrice
 
     ArrayList<Cote> list_cote;
     //ArrayList magnetisme_NSWE;
@@ -20,6 +22,11 @@ public class Bloc {
         //matrice = new Case[m][n];
     }
 
+    Bloc()
+    {
+        matrice = new Case[15][16]; // MODULE 1
+        setAllCaseCoord();
+    }
 
     public Case[][] Creation_Module1()
     {
@@ -138,6 +145,23 @@ public class Bloc {
 
     public ArrayList<Cote> getList_cote() {
         return list_cote;
+    }
+
+    public int get_m() {
+        return _m;
+    }
+
+    public int get_n() {
+        return _n;
+    }
+
+    public static Bloc getInstance()
+    {
+        if (bloc_instance == null)
+        {
+            bloc_instance = new Bloc();
+        }
+        return bloc_instance;
     }
 
 }
