@@ -15,17 +15,23 @@ public class Bloc {
 
     Bloc(int m, int n)
     {
-        matrice = new Case[15][16]; // MODULE 1
+        matrice = new Case[150][160]; // MODULE 1
         _m = m;
         _n = n;
         setAllCaseCoord();
+        matrice = Creation_Module1();
+
         //matrice = new Case[m][n];
     }
 
     Bloc()
     {
-        matrice = new Case[15][16]; // MODULE 1
+        matrice = new Case[150][160]; // MODULE 1
+        _m = 150;
+        _n = 160;
         setAllCaseCoord();
+        matrice = Creation_Module1();
+
     }
 
     public Case[][] Creation_Module1()
@@ -64,6 +70,7 @@ public class Bloc {
             add(matrice[9][15]);
             add(matrice[10][15]);
             add(matrice[11][15]);
+            add(matrice[12][15]);
             add(matrice[13][15]);
             add(matrice[14][15]);
 
@@ -80,7 +87,6 @@ public class Bloc {
             add(matrice[14][10]);
             add(matrice[14][9]);
 
-            add(matrice[14][9]);
             add(matrice[13][9]);
             add(matrice[12][9]);
             add(matrice[11][9]);
@@ -88,7 +94,7 @@ public class Bloc {
             add(matrice[9][9]);
             add(matrice[8][9]);
             add(matrice[7][9]);
-            add(matrice[6][9]);
+            //add(matrice[6][9]);
             add(matrice[5][9]);
             add(matrice[4][9]);
             add(matrice[3][9]);
@@ -117,11 +123,23 @@ public class Bloc {
         for (Case c : list_case_valide)
         {
             matrice[c.x][c.y].isValide = true;
+            matrice[c.x][c.y].setPM(1);
         }
 
         matrice[8][1].statut = 1;
+        matrice[8][1].isChecked = true;
 
         matrice[3][15].statut = 2;
+
+        Cote nord = Cote.getInstanceNord(4);
+        Cote sud = Cote.getInstanceSud(-1);
+        Cote west = Cote.getInstanceWest(3);
+        Cote est = Cote.getInstanceEst(-2);
+
+        System.out.println("cote nord : " + nord.getMagnétisme());
+        System.out.println("cote sud : " + sud.getMagnétisme());
+        System.out.println("cote west : " + west.getMagnétisme());
+        System.out.println("cote est : " + est.getMagnétisme());
 
         return  matrice;
     }
@@ -133,8 +151,10 @@ public class Bloc {
         {
             for (int j = 0; j < _n; j++)
             {
+                matrice[i][j] = new Case(0, false);
                 matrice[i][j].x = i;
                 matrice[i][j].y = j;
+                matrice[i][j].statut = 0;
             }
         }
     }

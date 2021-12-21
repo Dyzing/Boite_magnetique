@@ -14,7 +14,9 @@ public class Main {
         System.out.println(west.magnétisme);
         System.out.println(est.magnétisme);
      */
-
+    //Bloc bloc = Bloc.getInstance();
+    Liquide liquide = new Liquide();
+    liquide.AvancerLiquide();
 	System.out.println("Hello world");
     }
 }

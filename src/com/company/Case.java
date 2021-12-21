@@ -2,7 +2,7 @@ package com.company;
 
 public class Case {
 
-    int statut; //1 = depart || 2 = arrivée
+    int statut; //1 = depart || 2 = arrivée || 0 = normale
     int PM;
     boolean isChecked = false;
     boolean isEmbramchement = false;
