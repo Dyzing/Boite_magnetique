@@ -54,8 +54,11 @@ public class Liquide {
             (caseEst.isValide ==true && caseNord.isValide == false && caseSud.isValide ==true && caseOuest.isValide ==false) ||
                 (caseEst.isValide ==false && caseNord.isValide == false && caseSud.isValide ==true && caseOuest.isValide ==true))*/
         (nbVertical >= 1 && nbHorizontal >= 1){
+            System.out.println("");
             System.out.println("EMBRANCHEMENT !!");
             System.out.println("Embranchement aux coordonnées ("+ currentCase.getX() +" , " +currentCase.getY()+ ")");
+            System.out.println("");
+
             currentCase.isEmbramchement = true;
         }
         else {
@@ -134,6 +137,12 @@ public class Liquide {
                                 Cote nord = Cote.getInstanceNord('N');
                                 magnetisme_NSWE.put('N', magnetisme_NSWE.get('N') + nord.getMagnétisme());
                             }
+
+                            else
+                            {
+                                magnetisme_NSWE.put('N', -20);
+                            }
+                            System.out.println("");
                             System.out.println("magnetisme nord : " + magnetisme_NSWE.get('N'));
                         }
                     } while(isStillValid);
@@ -158,8 +167,13 @@ public class Liquide {
                         {
                             isStillValid = false;
                             if(n != 1) {
-                                Cote sud = Cote.getInstanceNord('S');
+                                Cote sud = Cote.getInstanceSud('S');
                                 magnetisme_NSWE.put('S', magnetisme_NSWE.get('S') + sud.getMagnétisme());
+                            }
+
+                            else
+                            {
+                                magnetisme_NSWE.put('S', -20);
                             }
                             System.out.println("magnetisme sud : " + magnetisme_NSWE.get('S'));
                         }
@@ -185,8 +199,12 @@ public class Liquide {
                         {
                             isStillValid = false;
                             if(n != 1) {
-                                Cote west = Cote.getInstanceNord('W');
+                                Cote west = Cote.getInstanceWest('W');
                                 magnetisme_NSWE.put('W', magnetisme_NSWE.get('W') + west.getMagnétisme());
+                            }
+                            else
+                            {
+                                magnetisme_NSWE.put('W', -20);
                             }
                             System.out.println("magnetisme west : " + magnetisme_NSWE.get('W'));
                         }
@@ -212,9 +230,16 @@ public class Liquide {
                             isStillValid = false;
                             if(n != 1)
                             {
-                            Cote est = Cote.getInstanceNord('E');
-                            magnetisme_NSWE.put('E', magnetisme_NSWE.get('E') + est.getMagnétisme());}
+                                Cote est = Cote.getInstanceEst('E');
+                                magnetisme_NSWE.put('E', magnetisme_NSWE.get('E') + est.getMagnétisme());
+                            }
+
+                            else
+                            {
+                                magnetisme_NSWE.put('E', -20);
+                            }
                             System.out.println("magnetisme est : " + magnetisme_NSWE.get('E'));
+                            System.out.println("");
 
                         }
                     } while(isStillValid);
@@ -231,7 +256,7 @@ public class Liquide {
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
-                        (e1, e2) -> e1,
+                        (e1, e2) -> e2,
                         HashMap::new
                 ));
     }
@@ -280,6 +305,10 @@ public class Liquide {
             }
         }
         System.out.println("Case end : (" +  caseRes.getX() + ", " + caseRes.getY() + ").");
+        System.out.println("");
+        System.out.println("--------------------------------------------------------------------------------------------");
+        System.out.println("");
+
 
         return caseRes;
     }
@@ -373,7 +402,7 @@ public class Liquide {
         {
             tabMagnetismeProche_NSWE.put('W', -20);
         }
-        AfficherValeurTabMagnetismeProche_NSWE(tabMagnetismeProche_NSWE);
+        //AfficherValeurTabMagnetismeProche_NSWE(tabMagnetismeProche_NSWE);
     }
 
     public void AfficherValeurTabMagnetismeProche_NSWE(Map<Character, Integer> tabMagnetismeProche_NSWE)
@@ -397,7 +426,7 @@ public class Liquide {
 
     public void FillPileChoix(Stack<Pair> pile, Map<Character, Integer> tabMagnetismeProche_NSWE)
     {
-        for(int i = 0; i <= 3; i++)
+        /*for(int i = 3; i >= 0; i--)
         {
             if(i == 3) {
                 if(tabMagnetismeProche_NSWE.get('E') == -20)
@@ -418,6 +447,23 @@ public class Liquide {
                 if(tabMagnetismeProche_NSWE.get('N') == -20)
                     continue;
                 pile.push(new Pair('N', tabMagnetismeProche_NSWE.get('N')));
+            }
+        }*/
+
+        Iterator iterator = tabMagnetismeProche_NSWE.keySet().iterator();
+
+        while(iterator.hasNext())
+        {
+            Object key   = iterator.next();
+            Object value = tabMagnetismeProche_NSWE.get(key);
+
+            if((int)value == -20)
+            {
+                continue;
+            }
+            else
+            {
+                pile.push(new Pair((Character)key, (int)value));
             }
         }
     }
@@ -482,6 +528,12 @@ public class Liquide {
                 caseCurrent = FindNextCaseCorridor(caseCurrent, matrice_bloc);
                 caseCurrent.isChecked = true;
             }
+        }
+        if(caseCurrent == caseEnd)
+        {
+            System.out.println("\n-------------------------------------------------------------------------------------");
+            System.out.println("\nBravo !! Le Liquide sombre à su rejoindre la case de fin. Félicitation !\n");
+            System.out.println("-------------------------------------------------------------------------------------\n");
         }
     }
 

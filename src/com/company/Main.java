@@ -1,22 +1,16 @@
 package com.company;
 
+import java.util.Scanner;
+
 public class Main {
 
+    public static String mode = "";
+
     public static void main(String[] args) {
-
-    /*    Cote nord = new Cote('N');
-        Cote sud = new Cote('S');
-        Cote west = new Cote('W');
-        Cote est = new Cote('E');
-
-        System.out.println(nord.magnétisme);
-        System.out.println(sud.magnétisme);
-        System.out.println(west.magnétisme);
-        System.out.println(est.magnétisme);
-     */
-    //Bloc bloc = Bloc.getInstance();
-    Liquide liquide = new Liquide();
-    liquide.AvancerLiquide();
-	System.out.println("Hello world");
+        System.out.println("Veuillez entrer votre choix de module : taper 1 ou 2");
+        Scanner sc = new Scanner(System.in);
+        mode = sc.nextLine();
+        Liquide liquide = new Liquide();
+        liquide.AvancerLiquide();
     }
 }
