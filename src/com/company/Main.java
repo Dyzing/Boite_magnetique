@@ -1,6 +1,4 @@
-package com.Boite_Magnetique;
-
-import java.util.Scanner;
+package com.company;
 
 public class Main {
 

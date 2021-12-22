@@ -1,4 +1,4 @@
-package com.Boite_Magnetique;
+package com.company;
 
 import javafx.util.Pair;
 
