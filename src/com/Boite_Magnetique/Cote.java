@@ -1,9 +1,9 @@
-package com.company;
+package com.Boite_Magnetique;
 
 public class Cote {
 
-    char cardinal; //NSWE
-    int magnétisme;
+    private char cardinal; //NSWE
+    private int magnétisme;
 
     private static Cote cote_instance_nord = null;
     private static Cote cote_instance_sud = null;

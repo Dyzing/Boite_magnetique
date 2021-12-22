@@ -1,27 +1,31 @@
-package com.company;
+package com.Boite_Magnetique;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bloc {
 
+    private String mode = "";
     private static Bloc bloc_instance = null;
-    Case[][] matrice;
-    int _m;
-    int _n; //m la hauteur de la matrice; n la largeur de la matrice
+    private Case[][] matrice;
+    private int _m;
+    private int _n; //m la hauteur de la matrice; n la largeur de la matrice
 
-    ArrayList<Cote> list_cote;
+    private ArrayList<Cote> list_cote;
     //ArrayList magnetisme_NSWE;
 
 
     Bloc(int m, int n)
     {
-        System.out.println("Magnétisme à -20 = chemin interdit");
         matrice = new Case[150][160]; // MODULE 1
         _m = m;
         _n = n;
         setAllCaseCoord();
-        if(Main.mode.equals("1"))
+
+        System.out.println("Veuillez entrer votre choix de module : taper 1 ou 2");
+        Scanner sc = new Scanner(System.in);
+        mode = sc.nextLine();
+        if(mode.equals("1"))
             matrice = Creation_Module1();
         else
             matrice = Creation_Module2();
@@ -31,12 +35,15 @@ public class Bloc {
 
     Bloc()
     {
-        System.out.println("Magnétisme à -20 = chemin interdit");
         matrice = new Case[150][160]; // MODULE 1
         _m = 150;
         _n = 160;
         setAllCaseCoord();
-        if(Main.mode.equals("1"))
+
+        System.out.println("Veuillez entrer votre choix de module : taper 1 ou 2");
+        Scanner sc = new Scanner(System.in);
+        mode = sc.nextLine();
+        if(mode.equals("1"))
             matrice = Creation_Module1();
         else
             matrice = Creation_Module2();
@@ -52,22 +59,22 @@ public class Bloc {
         int nbHorizontal = 0;
         int nbVertical = 0;
 
-        if(caseNord.isValide) {
+        if(caseNord.isValide()) {
             ++nbVertical;
         }
-        if(caseSud.isValide) {
+        if(caseSud.isValide()) {
             ++nbVertical;
         }
-        if(caseOuest.isValide) {
+        if(caseOuest.isValide()) {
             ++nbHorizontal;
         }
-        if(caseEst.isValide) {
+        if(caseEst.isValide()) {
             ++nbHorizontal;
         }
 
         if(nbVertical >= 1 && nbHorizontal >= 1){
             //System.out.println("Embranchement aux coordonnées ("+ currentCase.getX() +" , " +currentCase.getY()+ ")");
-            currentCase.isEmbramchement = true;
+            currentCase.setEmbramchement(true);
         }
         else {
             return;
@@ -82,10 +89,10 @@ public class Bloc {
         {
             for (int j = 0; j < _n; j++)
             {
-                if(matrice[i][j].isValide)
+                if(matrice[i][j].isValide())
                 {
                     CheckEmbranchement(matrice[i][j]);
-                    if(matrice[i][j].isEmbramchement)
+                    if(matrice[i][j].isEmbramchement())
                     {
                         matrice[i][j].setPM(3);
                     }
@@ -98,13 +105,13 @@ public class Bloc {
         }
     }
 
-    public Case[][] Creation_Module1()
+    private Case[][] Creation_Module1()
     {
         for (int i = 0; i < _m; i++)
         {
             for (int j = 0; j < _n; j++)
             {
-                matrice[i][j].isValide = false;
+                matrice[i][j].setValide(false);
             }
         }
 
@@ -187,14 +194,14 @@ public class Bloc {
 
         for (Case c : list_case_valide)
         {
-            matrice[c.x][c.y].isValide = true;
-            matrice[c.x][c.y].setPM(1);
+            matrice[c.getX()][c.getY()].setValide(true);
+            matrice[c.getX()][c.getY()].setPM(1);
         }
 
-        matrice[8][1].statut = 1;
-        matrice[8][1].isChecked = true;
+        matrice[8][1].setStatut(1);
+        matrice[8][1].setChecked(true);
 
-        matrice[3][15].statut = 2;
+        matrice[3][15].setStatut(2);
 
         Cote nord = Cote.getInstanceNord(4);
         Cote sud = Cote.getInstanceSud(-1);
@@ -211,13 +218,13 @@ public class Bloc {
         return  matrice;
     }
 
-    public Case[][] Creation_Module2()
+    private Case[][] Creation_Module2()
     {
         for (int i = 0; i < _m; i++)
         {
             for (int j = 0; j < _n; j++)
             {
-                matrice[i][j].isValide = false;
+                matrice[i][j].setValide(false);
             }
         }
 
@@ -283,21 +290,20 @@ public class Bloc {
             add(matrice[2][5]);
             add(matrice[2][4]);
             add(matrice[2][3]);
-            add(matrice[2][2]);
 
 
         }};
 
         for (Case c : list_case_valide)
         {
-            matrice[c.x][c.y].isValide = true;
-            matrice[c.x][c.y].setPM(1);
+            matrice[c.getX()][c.getY()].setValide(true);
+            matrice[c.getX()][c.getY()].setPM(1);
         }
 
-        matrice[8][1].statut = 1;
-        matrice[8][1].isChecked = true;
+        matrice[8][1].setStatut(1);
+        matrice[8][1].setChecked(true);
 
-        matrice[10][12].statut = 2;
+        matrice[10][12].setStatut(2);
 
 
         System.out.println("Veuillez entrer 3 pour des valeurs de magnétisme aléatoires\n ou bien \nentrer 4 pour des valeurs de magnétisme de votre choix");
@@ -341,16 +347,16 @@ public class Bloc {
         return  matrice;
     }
 
-    public void setAllCaseCoord()
+    private void setAllCaseCoord()
     {
         for (int i = 0; i < _m; i++)
         {
             for (int j = 0; j < _n; j++)
             {
                 matrice[i][j] = new Case(0, false);
-                matrice[i][j].x = i;
-                matrice[i][j].y = j;
-                matrice[i][j].statut = 0;
+                matrice[i][j].setX(i);
+                matrice[i][j].setY(j);
+                matrice[i][j].setStatut(0);
             }
         }
     }
