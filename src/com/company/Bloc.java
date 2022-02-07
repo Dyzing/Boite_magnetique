@@ -10,10 +10,7 @@ public class Bloc {
     private Case[][] matrice;
     private int _m;
     private int _n; //m la hauteur de la matrice; n la largeur de la matrice
-
     private ArrayList<Cote> list_cote;
-    //ArrayList magnetisme_NSWE;
-
 
     Bloc(int m, int n)
     {
